@@ -3,237 +3,313 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Trygve Utstumo · Trig AS</title>
-<meta name="description" content="Trygve Utstumo – engineer and engineering leader in AI, robotics and industrial data. Trig AS, Oslo.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><path d='M4 28 L28 28 L28 4 Z' fill='%230f766e'/></svg>">
+<title>Trygve Utstumo</title>
+<meta name="description" content="Trygve Utstumo – engineer and engineering leader in AI, robotics and industrial data. Based in Oslo.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><path d='M4 28 L28 28 L28 4 Z' fill='%23c23b22'/></svg>">
+<link rel="preload" href="fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<script>
+  // Stored theme choice, set before first paint.
+  try { var t = localStorage.getItem("trigve-theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
 <style>
+  @font-face { font-family: "Inter Variable"; font-style: normal; font-weight: 100 900; font-display: swap; src: url(fonts/inter-latin-wght-normal.woff2) format("woff2"); }
+  @font-face { font-family: "Inter Variable"; font-style: italic; font-weight: 100 900; font-display: swap; src: url(fonts/inter-latin-wght-italic.woff2) format("woff2"); }
+
+  /* Granitt (light) and Natt (dark), from the Mooring design system. */
   :root {
-    --bg: #fbfaf7; --fg: #1c1b19; --muted: #6b6760; --line: #e4e0d8; --accent: #0f766e; --card: #ffffff;
+    --bg: #ececea; --raised: #e2e2df; --ink: #1f2a24; --dim: #85877f; --muted: #62655f;
+    --maple: #b23a22; --orange: #a8661a; --orange-text: #8f5413; --line: rgb(31 42 36 / 0.12);
+    color-scheme: light;
   }
   @media (prefers-color-scheme: dark) {
-    :root { --bg: #141413; --fg: #ecebe7; --muted: #a29e95; --line: #2c2b28; --accent: #5eead4; --card: #1b1b19; }
+    :root:not([data-theme="light"]) {
+      --bg: #0a140e; --raised: #142619; --ink: #f4f5ee; --dim: #5d7462; --muted: #a9b89a;
+      --maple: #d4583a; --orange: #d9a441; --orange-text: #d9a441; --line: rgb(200 216 143 / 0.12);
+      color-scheme: dark;
+    }
   }
+  :root[data-theme="dark"] {
+    --bg: #0a140e; --raised: #142619; --ink: #f4f5ee; --dim: #5d7462; --muted: #a9b89a;
+    --maple: #d4583a; --orange: #d9a441; --orange-text: #d9a441; --line: rgb(200 216 143 / 0.12);
+    color-scheme: dark;
+  }
+
   * { box-sizing: border-box; }
-  html { -webkit-text-size-adjust: 100%; }
+  html { -webkit-text-size-adjust: 100%; background: var(--bg); }
   body {
-    margin: 0; background: var(--bg); color: var(--fg);
-    font: 17px/1.6 ui-sans-serif, -apple-system, "Segoe UI", Inter, Roboto, sans-serif;
+    margin: 0; background: var(--bg); color: var(--ink);
+    font: 16px/1.6 "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
   }
-  .wrap { max-width: 760px; margin: 0 auto; padding: 56px 20px 80px; }
-  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
-  header h1 { font-size: 2.4rem; line-height: 1.15; margin: 0 0 8px; letter-spacing: -0.02em; }
-  .tagline { font-size: 1.15rem; color: var(--muted); margin: 0 0 20px; }
-  .links { display: flex; flex-wrap: wrap; gap: 8px 20px; margin: 0; padding: 0; list-style: none; font-size: 0.95rem; }
-  nav.top { display: flex; gap: 20px; font-size: 0.9rem; margin-bottom: 48px; }
-  nav.top a { color: var(--muted); text-decoration: none; }
-  nav.top a:hover { color: var(--fg); }
-  section { margin-top: 64px; }
-  h2 {
-    font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted);
-    margin: 0 0 20px; padding-bottom: 8px; border-bottom: 1px solid var(--line);
+  a { color: var(--ink); text-decoration-color: var(--line); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  a:hover { color: var(--orange-text); text-decoration-color: currentColor; }
+  :focus-visible { outline: 2px solid var(--orange-text); outline-offset: 3px; border-radius: 4px; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 48px); }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  /* Bar */
+  .bar { position: sticky; top: 0; z-index: 10; background: var(--bg); border-bottom: 1px solid var(--line); }
+  .bar .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 24px; padding-top: 8px; padding-bottom: 8px; }
+  .home { display: flex; align-items: center; gap: 8px; min-height: 44px; font-size: 26px; text-decoration: none; }
+  .tw { line-height: 1.2; white-space: nowrap; }
+  .js .home .tw { visibility: hidden; }
+  .js .home.docked .tw { visibility: visible; }
+  .js #src { visibility: hidden; }
+  .fly { position: fixed; top: 0; left: 0; z-index: 11; font-weight: 600; font-size: 26px; letter-spacing: 0.03em; line-height: 1.2; transform-origin: 0 0; pointer-events: none; display: none; }
+  .js .fly { display: block; }
+  .js .fly.gone { visibility: hidden; }
+  .home svg { width: 16px; height: 16px; }
+  .pill {
+    min-height: 44px; padding: 0 18px; border: 1px solid var(--line); border-radius: 9999px;
+    background: var(--raised); color: var(--ink); font: inherit; font-size: 14px; cursor: pointer;
   }
-  .company {
-    background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 24px;
+  .pill[aria-pressed="true"] { background: var(--bg); border-color: var(--ink); }
+
+  /* Name lockup: each word over a hairline, its pronunciation and origin set beneath. */
+  .hero { min-height: calc(100svh - 61px); display: flex; flex-direction: column; justify-content: center; padding: clamp(96px, 14vh, 176px) 0; }
+  .names { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 64px 0.55em; font-size: clamp(40px, 6.6vw, 80px); }
+  .name { flex: 0 0 auto; width: min-content; }
+  .wm { position: relative; font-weight: 600; letter-spacing: 0.07em; line-height: 1; }
+  .tail { position: absolute; left: 100%; top: 0; margin-left: -0.07em; color: var(--dim); white-space: nowrap; }
+  .mark { width: 0.38em; height: 0.38em; margin: 0.38em -0.3em 0 0; flex-shrink: 0; }
+  .floor { border-top: 1px solid var(--line); margin-top: 0.2em; padding-top: 0.22em; font-size: max(17px, 0.2em); }
+  .tw { font-weight: 600; letter-spacing: 0.03em; }
+  .name .mean { margin: 10px 0 0; font-size: 14px; line-height: 1.5; letter-spacing: 0.02em; color: var(--muted); white-space: nowrap; }
+
+  /* Page: a quiet left rail for headings, a single measure for text. */
+  .rail { display: grid; grid-template-columns: 10rem minmax(0, 1fr); column-gap: clamp(24px, 5vw, 64px); }
+  .rail > * { grid-column: 2; }
+  .rail > h2 { grid-column: 1; grid-row: 1 / span 40; }
+  .intro { border-top: 1px solid var(--line); padding: 96px 0 0; }
+  .lead { font-size: clamp(19px, 2.2vw, 23px); line-height: 1.5; margin: 0 0 32px; max-width: 34em; text-wrap: pretty; }
+  .links { display: flex; flex-wrap: wrap; gap: 4px 32px; margin: 0; padding: 0; list-style: none; font-size: 15px; letter-spacing: 0.01em; }
+  .links a { display: inline-flex; align-items: center; min-height: 44px; }
+  section { margin-top: 112px; padding-top: 40px; border-top: 1px solid var(--line); }
+  h2 { font-size: 14px; line-height: 1.6; font-weight: 600; letter-spacing: 0.04em; margin: 0 0 24px; }
+  h3 { font-weight: 600; }
+  p { margin: 0 0 16px; max-width: 36em; text-wrap: pretty; }
+  section > p { font-size: 17px; line-height: 1.7; }
+
+  .work { list-style: none; margin: 0; padding: 0; display: grid; gap: 56px; }
+  .job { display: grid; grid-template-columns: 13rem minmax(0, 1fr); gap: 32px; align-items: start; }
+  .pic { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; border-radius: 12px; background: var(--raised); }
+  .pic--logo { display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 24px; letter-spacing: 0.02em; }
+  .pic--trio { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: 46fr 54fr; gap: 3px; overflow: hidden; }
+  .pic--trio img { display: block; width: 100%; height: 100%; min-height: 0; object-fit: cover; }
+  .pic--trio img:first-child { grid-column: 1 / -1; object-position: 45% 70%; }
+  .job .when { margin: 0 0 4px; }
+  .job h3 { margin: 0; font-size: 19px; }
+  .job p:not(.when) { margin: 10px 0 0; line-height: 1.65; }
+  .job .who { font-size: 14px; letter-spacing: 0.01em; color: var(--muted); }
+  .when { color: var(--muted); font-size: 14px; letter-spacing: 0.02em; padding-top: 2px; font-variant-numeric: tabular-nums; }
+  footer { margin-top: 160px; border-top: 1px solid var(--line); }
+  footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; padding-top: 24px; padding-bottom: 40px; color: var(--muted); font-size: 13px; letter-spacing: 0.02em; }
+
+  @media (max-width: 720px) {
+    .rail { grid-template-columns: minmax(0, 1fr); }
+    .rail > *, .rail > h2 { grid-column: 1; grid-row: auto; }
+    .job { grid-template-columns: minmax(0, 1fr); }
+    .job { gap: 16px; }
+    .pic { max-width: 20rem; }
   }
-  .company h3 { margin: 0 0 4px; font-size: 1.3rem; display: flex; align-items: center; gap: 10px; }
-  .company .meta { color: var(--muted); font-size: 0.9rem; margin: 0 0 12px; }
-  .company p:last-child { margin-bottom: 0; }
-  .item { display: grid; grid-template-columns: 9.5rem 1fr; gap: 4px 24px; margin-bottom: 28px; }
-  .when { color: var(--muted); font-size: 0.9rem; padding-top: 3px; font-variant-numeric: tabular-nums; }
-  .item h3 { margin: 0; font-size: 1.05rem; }
-  .item .org { color: var(--muted); font-size: 0.95rem; }
-  .item p { margin: 6px 0 0; }
   @media (max-width: 600px) {
-    .wrap { padding: 32px 16px 64px; }
-    header h1 { font-size: 2rem; }
-    .item { grid-template-columns: 1fr; }
+    .hero { min-height: 0; padding: 72px 0 56px; }
+    .names { row-gap: 48px; }
+    .name { width: auto; flex: 1 1 100%; }
+    .mark { display: none; }
+    .name .mean { white-space: normal; }
+    .wm { display: inline-block; }
   }
-  ul.pubs { padding-left: 1.1em; margin: 0; }
-  ul.pubs li { margin-bottom: 12px; font-size: 0.95rem; }
-  .skills { display: grid; grid-template-columns: 9.5rem 1fr; gap: 8px 24px; }
-  .skills dt { color: var(--muted); font-size: 0.9rem; padding-top: 2px; }
-  .skills dd { margin: 0; }
-  @media (max-width: 600px) { .skills { grid-template-columns: 1fr; gap: 2px; } .skills dd { margin-bottom: 10px; } }
-  footer { margin-top: 72px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.85rem; }
   @media print {
-    nav.top, footer { display: none; }
-    body { font-size: 11pt; background: #fff; color: #000; }
-    section { margin-top: 28px; }
-    .wrap { padding: 0; }
+    .bar, footer { display: none; }
+    html, body { background: #fff; color: #000; font-size: 11pt; }
+    .intro, section { border: 0; padding-top: 0; margin-top: 28px; }
   }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <nav class="top">
-    <a href="#trig">Trig AS</a>
-    <a href="#experience">Experience</a>
-    <a href="#education">Education</a>
-    <a href="#publications">Publications</a>
-  </nav>
-
-  <header>
-    <h1>Trygve Utstumo</h1>
-    <p class="tagline">Engineer and engineering leader in AI, robotics and industrial data. Ph.D. in engineering cybernetics. Former Googler. Based in Oslo.</p>
-    <ul class="links">
-      <li><a href="mailto:trygve.u@gmail.com">trygve.u@gmail.com</a></li>
-      <li><a href="https://www.linkedin.com/in/trygveu">LinkedIn</a></li>
-      <li><a href="https://github.com/trygveu">GitHub</a></li>
-    </ul>
-  </header>
-
-  <section id="about">
-    <h2>About</h2>
-    <p>I've worked across embedded software, augmented reality and field robotics, and more recently led a 50-person engineering organisation building generative AI for industrial data. At Google I helped take ARCore from launch to 100 million Android devices. My Ph.D. work on precision weed control became the Kilter robot, which Kubota now distributes in Europe.</p>
-    <p>Today I'm a Principal Software Engineer at Cognite, working hands-on with data integrations and industrial knowledge graphs combined with LLMs.</p>
-  </section>
-
-  <section id="trig">
-    <h2>Company</h2>
-    <div class="company">
-      <h3>
-        <svg width="22" height="22" viewBox="0 0 32 32" aria-hidden="true"><path d="M4 28 L28 28 L28 4 Z" fill="currentColor" style="color:var(--accent)"/></svg>
-        Trig AS
-      </h3>
-      <p class="meta">Org. no. <a href="https://w2.brreg.no/enhet/sok/detalj.jsp?orgnr=922411484">922 411 484</a> · Oslo, Norway · Founded 2019</p>
-      <p>Trig AS is Trygve Utstumo's holding and investment company.</p>
-      <p>Contact: <a href="mailto:trygve.u@gmail.com">trygve.u@gmail.com</a></p>
-    </div>
-  </section>
-
-  <section id="experience">
-    <h2>Experience</h2>
-
-    <div class="item">
-      <div class="when">2025 – present</div>
-      <div>
-        <h3>Principal Software Engineer</h3>
-        <div class="org">Cognite · Oslo</div>
-        <p>Hands-on engineering in the Data Integrations product area.</p>
-      </div>
-    </div>
-
-    <div class="item">
-      <div class="when">2023 – 2025</div>
-      <div>
-        <h3>Lead Engineering Manager, AI &amp; Data Workflow</h3>
-        <div class="org">Cognite · Oslo</div>
-        <p>Led an engineering organisation of 50+ people across Norway, India and the US, covering GenAI, industry apps, data onboarding and contextualisation. We built AI tools that fit into the day-to-day work of industrial workers.</p>
-      </div>
-    </div>
-
-    <div class="item">
-      <div class="when">2019 – 2023</div>
-      <div>
-        <h3>Principal Engineer &amp; Team Lead, Disruptive MVP</h3>
-        <div class="org">Cognite · Oslo</div>
-        <p>Led Cognite's robotics work in close partnership with Boston Dynamics. We put mobile robots and deep learning into production in industrial operations, keeping digital twins up to date and closing the loop.</p>
-      </div>
-    </div>
-
-    <div class="item">
-      <div class="when">2017 – 2019</div>
-      <div>
-        <h3>Systems Integration Engineer, Daydream / ARCore</h3>
-        <div class="org">Google · Mountain View, CA</div>
-        <p>Joined just before ARCore launched and worked on device scaling: tools, processes, and IMU and camera calibration as ARCore grew to 100 million Android devices in its first year. This work led to a change in the Qualcomm Snapdragon 855 reference design, which affected millions of phones.</p>
-      </div>
-    </div>
-
-    <div class="item">
-      <div class="when">2011 – 2017</div>
-      <div>
-        <h3>Industry Ph.D. &amp; Robotics Group Lead</h3>
-        <div class="org">Adigo AS · Langhus</div>
-        <p>Led a robotics group of five engineers. Projects included BLDC motor control for the Paxster electric postal vehicle, embedded design and signal processing for the LIRA cable diagnostic instrument, and embedded Linux and computer vision for precision agriculture.</p>
-      </div>
-    </div>
-
-    <div class="item">
-      <div class="when">2015</div>
-      <div>
-        <h3>Visiting Researcher, Project Tango</h3>
-        <div class="org">Google · Mountain View, CA</div>
-        <p>Worked on orientation initialisation in the Tango 6-DOF team under Joel Hesch, and implemented a non-linear 3-DOF filter in C++ on Tango hardware.</p>
-      </div>
-    </div>
-
-    <div class="item">
-      <div class="when">2007 – 2009</div>
-      <div>
-        <h3>Earlier</h3>
-        <div class="org">Red Cross · Xstrata Nickel · Norwegian Correctional Services</div>
-        <p>Youth delegate with the Armenian Red Cross in Yerevan; summer intern in process control at Xstrata Nickel, Kristiansand; summer prison officer at Arendal Prison.</p>
-      </div>
-    </div>
-  </section>
-
-  <section id="education">
-    <h2>Education</h2>
-
-    <div class="item">
-      <div class="when">2012 – 2018</div>
-      <div>
-        <h3>Ph.D., Engineering Cybernetics</h3>
-        <div class="org">NTNU · Trondheim</div>
-        <p>Industry Ph.D. thesis: <em>Asterix: Automatic weed detection and control in row cultures</em>, supervised by Prof. Tommy Gravdahl. The work covered navigation, fluid dynamics, computer vision and robot design for a robot that treats individual weeds with single herbicide droplets. The technology became <a href="https://www.kiltersystems.com">Kilter</a>.</p>
-      </div>
-    </div>
-
-    <div class="item">
-      <div class="when">2015</div>
-      <div>
-        <h3>Visiting Researcher, MARS Lab</h3>
-        <div class="org">University of Minnesota · Minneapolis</div>
-        <p>Visual-inertial navigation (VINS), time synchronisation, and IMU and camera calibration with Prof. Stergios Roumeliotis.</p>
-      </div>
-    </div>
-
-    <div class="item">
-      <div class="when">2005 – 2011</div>
-      <div>
-        <h3>M.Sc., Engineering Cybernetics</h3>
-        <div class="org">NTNU · Trondheim</div>
-        <p>Attitude estimation and precision agriculture. For the thesis, wrote new firmware for an ARM Cortex-M3 IMU with a 3-DOF extended Kalman filter and a non-linear estimator.</p>
-      </div>
-    </div>
-
-    <div class="item">
-      <div class="when">2010</div>
-      <div>
-        <h3>Erasmus exchange</h3>
-        <div class="org">EPFL · Lausanne</div>
-        <p>Microtechnics. Designed and built a pan-tilt stereoscopic miniature camera for laparoscopic surgery with Prof. Hannes Bleuler.</p>
-      </div>
-    </div>
-  </section>
-
-  <section id="publications">
-    <h2>Patents &amp; publications</h2>
-    <ul class="pubs">
-      <li>Overskeid Ø., Brevik A., Vatne J.K., Urdal F., Utstumo T. <em>Valve nozzle and valve nozzle assembly.</em> US Patent 11261989B2.</li>
-      <li>Arbo M.H., Utstumo T., Brekke E., Gravdahl J.T. (2017). Unscented multi-point smoother for fusion of delayed displacement measurements: application to agricultural robots. <em>Modeling, Identification and Control</em>, 38(1).</li>
-      <li>Utstumo T., Berge T.W., Gravdahl J.T. (2015). Non-linear model predictive control for constrained robot navigation in row crops. <em>IEEE ICIT</em>.</li>
-      <li>Dorum J., Utstumo T., Gravdahl J.T. (2015). Experimental comparison of adaptive controllers for trajectory tracking in agricultural robotics. <em>ICSTCC</em>, IEEE.</li>
-      <li>Urdal F., Utstumo T., Vatne J.K., Ellingsen S., Gravdahl J.T. (2014). Design and control of precision drop-on-demand herbicide application in agricultural robotics. <em>IEEE ICARCV</em>.</li>
-      <li>Utstumo T., Gravdahl J.T. (2013). Implementation and comparison of attitude estimation methods for agricultural robotics. <em>Agricontrol</em>, 4(1).</li>
-    </ul>
-  </section>
-
-  <section id="skills">
-    <h2>Skills &amp; languages</h2>
-    <dl class="skills">
-      <dt>Programming</dt><dd>Python, Kotlin (Android), C++, Rust</dd>
-      <dt>AI</dt><dd>LLM applications (Claude, Gemini, GPT), Vertex AI, LangChain, vector search, knowledge graphs</dd>
-      <dt>Robotics</dt><dd>SLAM, visual-inertial navigation, sensor fusion, camera and IMU calibration, MPC</dd>
-      <dt>Leadership</dt><dd>Cross-functional engineering organisations of 50+ across three continents</dd>
-      <dt>Languages</dt><dd>Norwegian (native), English (fluent)</dd>
-    </dl>
-  </section>
-
-  <footer>
-    © Trig AS · trigve.no
-  </footer>
+<div class="bar">
+  <div class="wrap">
+    <a class="home" href="#top">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 28 L28 28 L28 4 Z" fill="var(--maple)"/></svg>
+      <span class="tw" id="dock">trig·ve</span>
+    </a>
+    <button class="pill" type="button" id="theme">Dark</button>
+  </div>
 </div>
+
+<span class="fly" id="fly" aria-hidden="true">trig·ve</span>
+
+<main id="top">
+  <div class="wrap">
+    <header class="hero">
+      <h1 class="sr">Trygve Utstumo, PhD</h1>
+      <div class="names">
+        <svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M4 28 L28 28 L28 4 Z" fill="var(--maple)"/></svg>
+        <div class="name">
+          <div class="wm" aria-hidden="true">trygve</div>
+          <div class="floor"><span class="tw" id="src">trig·ve</span></div>
+          <p class="mean">From Norse: safe, trustworthy</p>
+        </div>
+        <div class="name">
+          <div class="wm" aria-hidden="true">utstumo<span class="tail">, phd</span></div>
+          <div class="floor"><span class="tw">ut·stu·mo</span></div>
+          <p class="mean">A farm in Dalsbygda</p>
+        </div>
+      </div>
+    </header>
+
+    <div class="intro rail">
+      <p class="lead">Engineer and engineering leader in AI, robotics and industrial data. Ph.D. in engineering cybernetics. Former Googler. Based in Oslo.</p>
+      <ul class="links">
+        <li><a href="mailto:trygve.u@gmail.com">trygve.u@gmail.com</a></li>
+        <li><a href="https://www.linkedin.com/in/trygveu">LinkedIn</a></li>
+        <li><a href="https://github.com/trygveu">GitHub</a></li>
+      </ul>
+    </div>
+
+
+    <section class="rail" id="about">
+      <h2>About</h2>
+      <p>I've worked across embedded software, augmented reality and field robotics, and more recently led a 50-person engineering organisation building generative AI for industrial data. At Google I helped take ARCore from launch to 100 million Android devices. My Ph.D. work on precision weed control became the Kilter robot, which Kubota now distributes in Europe.</p>
+      <p>Today I'm a Principal Staff Engineer at Cognite, working on Custom Flows.</p>
+    </section>
+
+
+    <section class="rail" id="work">
+      <h2>Work</h2>
+      <!-- TODO: fix my resume and add it as a download -->
+      <ol class="work">
+        <li class="job">
+          <img class="pic" src="images/cognite.jpg" width="800" height="800" alt="Cognite logo" loading="lazy">
+          <div>
+            <p class="when">2019 – present · 7 years</p>
+            <h3>Cognite</h3>
+            <p>Roles ranging from robotics lead and lead engineering manager to, now, Principal Staff Engineer on <a href="https://www.cognite.com/en/product/flows">Custom Flows</a>.</p>
+          </div>
+        </li>
+        <li class="job">
+          <img class="pic" src="images/arcore-calibration.jpg" width="750" height="1000" alt="A digital caliper measuring a machined aluminium part on a test rig" loading="lazy">
+          <div>
+            <p class="when">2017 – 2019</p>
+            <h3>Google ARCore / Daydream</h3>
+            <p>Device calibration for augmented reality with Qualcomm, Samsung, Sony and Pixel. Clock synchronisation between IMU and camera, data collection for Pixel face unlock, and thermal debugging.</p>
+          </div>
+        </li>
+        <li class="job">
+          <img class="pic" src="images/kilter.jpg" width="1200" height="675" alt="The Kilter weeding robot straddling rows of carrots in a field" loading="lazy">
+          <div>
+            <p class="when">2011 – 2018</p>
+            <h3><a href="https://www.adigo.no">Adigo</a> / <a href="https://www.kiltersystems.com">Kilter</a></h3>
+            <p>Industrial PhD candidate on Kilter. Supervised six master’s students and hired five. Weed leaf classification, navigation, and droplet and nozzle control (patented).</p>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <section class="rail" id="education">
+      <h2>Education</h2>
+      <ol class="work">
+        <li class="job">
+          <div class="pic pic--trio">
+            <img src="images/ntnu.jpg" width="1200" height="619" alt="The big blue NTNU letters on the lawn outside the main building in Trondheim" loading="lazy">
+            <img src="images/ntnu-robot-build.jpg" width="300" height="200" alt="Two students building an aluminium-frame field robot in a lab" loading="lazy">
+            <img src="images/ntnu-imu.jpg" width="900" height="698" alt="A custom IMU board mounted next to a MicroStrain reference unit" loading="lazy">
+          </div>
+          <div>
+            <p class="when">2005 – 2018</p>
+            <h3>PhD and MSc, engineering cybernetics · NTNU</h3>
+            <p>Industrial PhD on weed detection and control in row crops. Supervised six master’s students and co-supervised PhD candidate Johan Hatleskog.</p>
+            <p class="who"><a href="https://scholar.google.com/citations?user=1-6y9qoAAAAJ&amp;hl=no">Patents and papers on Google Scholar</a></p>
+          </div>
+        </li>
+        <li class="job">
+          <img class="pic" src="images/mars-lab.jpg" width="1200" height="1200" alt="The MARS Lab banner above the lab’s motion-capture room, with cameras along the walls and checkerboard calibration targets on the floor" loading="lazy">
+          <div>
+            <p class="when">2015</p>
+            <h3>Visiting researcher · University of Minnesota, MARS Lab</h3>
+            <p>Studied visual-inertial navigation systems under Prof. Stergios Roumeliotis.</p>
+          </div>
+        </li>
+        <li class="job">
+          <img class="pic" src="images/epfl-stereo-camera.jpg" width="1200" height="803" alt="The miniature pan-tilt camera head in machined aluminium, driven by a thin tungsten cable over a pulley" loading="lazy">
+          <div>
+            <p class="when">2010</p>
+            <h3>Erasmus exchange · EPFL, Lab de microtechnique</h3>
+            <p>A pan-tilt stereo camera for laparoscopic surgery, small enough to go through an 8 mm port. Namiki servos sit outside the assembly and drive the head through a balanced 0.45 mm tungsten cable. Designed in SolidWorks, machined in stainless 316 and aluminium 7075 at l’Atelier de l’Institut de Microtechnique, where I also assembled it. The project later spun out as <a href="https://www.distalmotion.com/">Distalmotion</a>.</p>
+            <p class="who">With Prof. Hannes Bleuler, Dr. Ricardo Beira and Dr. Laura Santos.</p>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>trigve.no</span>
+    <span>Trig AS · org. no. 922 411 484</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  // As the page scrolls, "trig·ve" grows from the dictionary line into the bar.
+  var src = document.getElementById("src");
+  var dock = document.getElementById("dock");
+  var home = dock.parentNode;
+  var fly = document.getElementById("fly");
+  var still = matchMedia("(prefers-reduced-motion: reduce)");
+  var srcDocTop = 0, distance = 1;
+  document.documentElement.classList.add("js");
+
+  function measure() {
+    srcDocTop = src.getBoundingClientRect().top + scrollY;
+    distance = Math.max(1, srcDocTop - dock.getBoundingClientRect().top);
+    place();
+  }
+  function place() {
+    var p = Math.min(1, Math.max(0, scrollY / distance));
+    if (still.matches) p = p < 1 ? 0 : 1;
+    var e = p * p * (3 - 2 * p);
+    var a = src.getBoundingClientRect();
+    var b = dock.getBoundingClientRect();
+    var from = parseFloat(getComputedStyle(src).fontSize) / parseFloat(getComputedStyle(fly).fontSize);
+    var k = from + (1 - from) * e;
+    fly.style.transform = "translate(" + (a.left + (b.left - a.left) * e) + "px," + (a.top + (b.top - a.top) * e) + "px) scale(" + k + ")";
+    var docked = p >= 1;
+    home.classList.toggle("docked", docked);
+    fly.classList.toggle("gone", docked);
+  }
+  addEventListener("scroll", place, { passive: true });
+  addEventListener("resize", measure);
+  if (document.fonts) document.fonts.ready.then(measure);
+  measure();
+
+  // Theme: follows the system until the visitor picks one; the choice is remembered.
+  var root = document.documentElement;
+  var toggle = document.getElementById("theme");
+  var systemDark = matchMedia("(prefers-color-scheme: dark)");
+  function isDark() {
+    var t = root.dataset.theme;
+    return t === "dark" || t === "light" ? t === "dark" : systemDark.matches;
+  }
+  function sync() {
+    var dark = isDark();
+    toggle.textContent = dark ? "Light" : "Dark";
+    toggle.setAttribute("aria-label", dark ? "Switch to light theme" : "Switch to dark theme");
+  }
+  toggle.addEventListener("click", function () {
+    var next = isDark() ? "light" : "dark";
+    root.dataset.theme = next;
+    try { localStorage.setItem("trigve-theme", next); } catch (e) {}
+    sync();
+  });
+  systemDark.addEventListener("change", sync);
+  sync();
+})();
+</script>
 </body>
 </html>
