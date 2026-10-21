@@ -134,13 +134,13 @@
   <div class="wrap">
     <a class="home" href="#top">
       <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 28 L28 28 L28 4 Z" fill="var(--maple)"/></svg>
-      <span class="tw" id="dock">trig·ve</span>
+      <span class="tw" id="dock">trig</span>
     </a>
     <button class="pill" type="button" id="theme">Dark</button>
   </div>
 </div>
 
-<span class="fly" id="fly" aria-hidden="true">trig·ve</span>
+<span class="fly" id="fly" aria-hidden="true">trig<span id="fly-ve">·ve</span></span>
 
 <main id="top">
   <div class="wrap">
@@ -259,11 +259,12 @@
 
 <script>
 (function () {
-  // As the page scrolls, "trig·ve" grows from the dictionary line into the bar.
+  // As the page scrolls, "trig·ve" grows from the dictionary line into the bar, dropping "·ve" on the way.
   var src = document.getElementById("src");
   var dock = document.getElementById("dock");
   var home = dock.parentNode;
   var fly = document.getElementById("fly");
+  var flyVe = document.getElementById("fly-ve");
   var still = matchMedia("(prefers-reduced-motion: reduce)");
   var srcDocTop = 0, distance = 1;
   document.documentElement.classList.add("js");
@@ -281,6 +282,7 @@
     var b = dock.getBoundingClientRect();
     var from = parseFloat(getComputedStyle(src).fontSize) / parseFloat(getComputedStyle(fly).fontSize);
     var k = from + (1 - from) * e;
+    flyVe.style.opacity = String(1 - e);
     fly.style.transform = "translate(" + (a.left + (b.left - a.left) * e) + "px," + (a.top + (b.top - a.top) * e) + "px) scale(" + k + ")";
     var docked = p >= 1;
     home.classList.toggle("docked", docked);
